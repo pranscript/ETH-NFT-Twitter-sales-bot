@@ -19,6 +19,8 @@ This repo is a modification of already established repos [NFT Sales Twitter Bot]
 ## How to use
 
 - Enter details in .env file
+- Replace abi.json data with your data
+- Replace rarity.json data with your data  
 - To run locally, ``` node app.js ```
 - To run on heroku, enter .env values in heroku config vars and then follow heroku deploy method 
 
