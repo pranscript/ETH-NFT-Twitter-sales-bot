@@ -16,6 +16,12 @@ This repo is a modification of already established repos [NFT Sales Twitter Bot]
 - Genie
 - Element
 
+## How to use
+
+- Enter details in .env file
+- To run locally, ``` node app.js ```
+- To run on heroku, enter .env values in heroku config vars and then follow heroku deploy method 
+
 ## Credits and Acknowledgments
 
 [dsgriffin](https://github.com/dsgriffin) 
