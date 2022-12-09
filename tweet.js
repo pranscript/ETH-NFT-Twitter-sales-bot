@@ -179,7 +179,7 @@ async function getMediaID(tokens) {
                     resolve(true);                
                 }
                 singleSaleEmitter.emit('processNextSale');
-                }, 22000)
+                }, process.env.DELAY/4)
             }
     );
 
