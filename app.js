@@ -27,8 +27,7 @@ let lastTransactionHash;
 async function monitorContract() {
   
   const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
-  singleSaleQ.enqueue({'tokens':[1747],'transactionHash':'0x8a0f8c886b8a66fd2b76383b0a1f83fc1bb415e3e8f43301bee659a404960e7c','totalPrice':0.33,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x0f7776F7E48814923a967FaE5CE6F612eAB4e4BD', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
-  multiSaleQ.enqueue({'tokens':[1717,3382,92,5925,3603,3322],'transactionHash':'0x00340b91ecac9f73d562fb1350e8b5a50cd5363aa3df0eaf4c3e2989f3992893','totalPrice':2.59,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x2B7BDb4aE3f24ACD1d32D456Dee034b6d2184d59', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
+  
   contract.events
     .Transfer({})
     .on('connected', (subscriptionId) => {
