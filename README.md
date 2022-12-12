@@ -16,6 +16,8 @@ This repo is a modification of already established repos [NFT Sales Twitter Bot]
 - Genie
 - Element
 
+It supports both individual as well as sweep sales.
+
 ## How to use
 
 - Enter details in .env file
@@ -37,7 +39,7 @@ Please include proper attribution to my original repo if you fork, modify or uti
 
 ## Contact to deploy
 
-[pran_eth](https://twitter.com/pran_eth)
+[pran_eth](https://twitter.com/pran_eth) - Though the deployment is straightforward, if you need help then you can contact me on my twitter.
 
 ## Donations
 
