@@ -163,11 +163,14 @@ async function monitorContract() {
             console.log("Sweep")
             multiSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
         }else{
+            console.log("Individual Sale")
             if(process.env.IS_RARITY_DATA == true && process.env.SET_RARITY == true && parseInt(rarity[tokens[0]]) > process.env.RARITY){
-              console.log("Individual sale above rarity. Not processing");
+              console.log("Individual sale above minimum rarity set. Not processing");
+              return
+            }else if ( (currency.name === 'ETH' && process.env.MIN_ETH_PRICE >totalPrice ) || (currency.name === 'WETH' && process.env.MIN_WETH_PRICE >totalPrice )){
+              console.log("Individual sale below minimum price set. Not processing");
               return
             }
-            console.log("Individual Sale")
             singleSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
         }
       
