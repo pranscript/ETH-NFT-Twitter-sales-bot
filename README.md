@@ -1,6 +1,6 @@
 # ETH NFT Twitter Sales Bot 🤖
 
-This repo is a modification of already established repos [NFT Sales Twitter Bot](https://github.com/dsgriffin/nft-sales-twitter-bot) and [Ethereum NFT Sales Bot](https://github.com/kenryu42/ethereum-nft-sales-bot). This repo uses Looksrare API instead of Opensea API to fetch metadata because of the unavailability of Opensea API to everyone and also introduces FIFO approach to process sales data by adding delay to it, circumventing API limits.
+ This repo uses Looksrare API instead of Opensea API to fetch metadata because of the unavailability of Opensea API to everyone and also introduces FIFO approach to process sales data by adding delay to it, circumventing API limits.
 
 ## Live Demo
 
@@ -16,18 +16,22 @@ This repo is a modification of already established repos [NFT Sales Twitter Bot]
 - Genie
 - Element
 
-It supports both individual as well as sweep sales.
+- Supports both individual as well as sweep sales.
+- Supports rarity conditions
+- Supports minimum price conditions
 
 ## How to use
 
 - Enter details in .env file
 - Replace abi.json data with your data
-- Replace rarity.json data with your data  
+- Replace rarity.json data with your data (optional)
 - To run locally, ``` node app.js ```
 - To run on heroku, enter .env values in heroku config vars and then follow heroku deploy method 
 
 ## Credits and Acknowledgments
 
+This repo is a modification of repos [NFT Sales Twitter Bot](https://github.com/dsgriffin/nft-sales-twitter-bot) and [Ethereum NFT Sales Bot](https://github.com/kenryu42/ethereum-nft-sales-bot).
+ 
 [dsgriffin](https://github.com/dsgriffin) 
 [Kenryu42](https://github.com/kenryu42) 
 
