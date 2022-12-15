@@ -6,7 +6,7 @@
 
 [Mekaverse Sales Bot](https://twitter.com/botMeka)
 
-## Supports
+## Marketplace
 
 - Opensea
 - Looksrare
@@ -15,6 +15,8 @@
 - Gem
 - Genie
 - Element
+
+## Features
 
 - Supports both individual as well as sweep sales.
 - Supports rarity conditions
