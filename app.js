@@ -163,6 +163,10 @@ async function monitorContract() {
             console.log("Sweep")
             multiSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
         }else{
+            if(process.env.IS_RARITY_DATA == true && process.env.SET_RARITY == true && parseInt(rarity[tokens[0]]) > process.env.RARITY){
+              console.log("Individual sale above rarity. Not processing");
+              return
+            }
             console.log("Individual Sale")
             singleSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
         }
@@ -192,11 +196,8 @@ singleSaleEmitter.on('processNextSale', async () => {
         await getTokenData(data['tokens'][0]).then(tokenData => {
           if(tokenData !== 'error'){
             console.log("Successfully fetched NFT Metadata");
-            if(parseInt(rarity[data['tokens'][0]]) <= process.env.RARITY){
-
-              let tweetText = `🤖 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}\b🎯 Rarity - ${rarity[data['tokens'][0]]}/8888\n#mekaverse #gundam #NFTJapan #mecha\b${data['market'].site}${process.env.CONTRACT_ADDRESS}/${data['tokens'][0]}`
-              threadTweetWithImage(tweetText,_.get(tokenData, 'image_url'), data['buyer'], data['seller'], data['tokens'][0]);
-            }
+            let tweetText = `🤖 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}${process.env.IS_RARITY_DATA == true?`\b🎯 Rarity - ${rarity[data['tokens'][0]]}/${process.env.TOTAL_NFT}` :``}\n#mekaverse #gundam #NFTJapan #mecha\b${data['market'].site}${process.env.CONTRACT_ADDRESS}/${data['tokens'][0]}`
+            threadTweetWithImage(tweetText,_.get(tokenData, 'image_url'), data['buyer'], data['seller'], data['tokens'][0]);
           }
         })
     }
