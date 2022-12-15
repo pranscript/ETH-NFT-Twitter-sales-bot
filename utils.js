@@ -46,16 +46,34 @@ async function getTokenData(tokenId) {
     const assetName = await retry(
       async (bail) => {
         // retrieve metadata for asset from looksrare
-        const response = await axios.get(
-          `https://api.looksrare.org/api/v1/tokens?collection=${process.env.CONTRACT_ADDRESS}&tokenId=${parseInt(tokenId)}`
-        );
-
-        const data = response.data.data
-
-        return {
+        if(process.env.IS_OPENSEA){
+          const response = await axios.get(
+            `https://api.opensea.io/api/v1/asset/${process.env.CONTRACT_ADDRESS}/${parseInt(tokenId)}`,
+            {
+              headers: {
+                'X-API-KEY': process.env.X_API_KEY,
+              },
+            }
+          );
+  
+          const data = response.data;
+  
+          return {
             assetName: _.get(data, 'name'),
-            image_url: _.get(data, 'imageURI')
-        };
+            image_url: _.get(data, 'image_url')
+          };
+        }else{
+          const response = await axios.get(
+            `https://api.looksrare.org/api/v1/tokens?collection=${process.env.CONTRACT_ADDRESS}&tokenId=${parseInt(tokenId)}`
+          );
+
+          const data = response.data.data
+
+          return {
+              assetName: _.get(data, 'name'),
+              image_url: _.get(data, 'imageURI')
+          };
+        }
       }
       ,
       {
@@ -66,7 +84,7 @@ async function getTokenData(tokenId) {
 
     return assetName;
   } catch (error) {
-    console.error("Looksrare API Error");
+    console.error("API Error");
     return 'error'
   }
 }
