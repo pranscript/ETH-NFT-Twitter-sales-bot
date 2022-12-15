@@ -1,6 +1,6 @@
 # ETH NFT Twitter Sales Bot 🤖
 
- This repo uses Looksrare API instead of Opensea API to fetch metadata because of the unavailability of Opensea API to everyone and also introduces FIFO approach to process sales data by adding delay to it, circumventing API limits.
+ Monitors NFT sales through Ethereum logs, fetches metadata from either Looksrare API or Opensea API and posts it on Twitter. There is an added delay in processing transactions for stability purpose and to stay within API limits.
 
 ## Live Demo
 
@@ -18,6 +18,8 @@
 
 ## Features
 
+- Supports Opensea API and Looksrare API
+- Supports rate limiting
 - Supports both individual as well as sweep sales.
 - Supports rarity conditions
 - Supports minimum price conditions
@@ -25,7 +27,7 @@
 ## How to use
 
 - Enter details in .env file
-- Replace abi.json data with your data
+- Replace abi.json data with your raw data
 - Replace rarity.json data with your data (optional)
 - To run locally, ``` node app.js ```
 - To run on heroku, enter .env values in heroku config vars and then follow heroku deploy method 
