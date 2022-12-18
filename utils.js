@@ -46,7 +46,7 @@ async function getTokenData(tokenId) {
     const assetName = await retry(
       async (bail) => {
         // retrieve metadata for asset from looksrare
-        if(process.env.IS_OPENSEA == false){
+        if(process.env.IS_OPENSEA == true){
           const response = await axios.get(
             `https://api.opensea.io/api/v1/asset/${process.env.CONTRACT_ADDRESS}/${parseInt(tokenId)}`,
             {
