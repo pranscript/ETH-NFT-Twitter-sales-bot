@@ -1,3 +1,4 @@
 node_modules/
 .env2
 test.txt
+output.log

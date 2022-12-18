@@ -26,6 +26,7 @@ let lastTransactionHash;
 
 async function monitorContract() {
   
+  console.log("Started monitoring ethereum events");
   const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
 
   //Test transaction for both individual and sweep. It will insert this the first time program is run. 
@@ -75,7 +76,7 @@ async function monitorContract() {
       let market;
 
       const recipient = receipt.to.toLowerCase();
-      if(!(recipient in aggregators) || !(recipient in markets)) return
+      if(!(recipient in aggregators) && !(recipient in markets)) return
 
       for (let log of receipt.logs) {
         const logAddress = log.address.toLowerCase();
