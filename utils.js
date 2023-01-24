@@ -29,6 +29,13 @@ function getSeaportSalePrice(decodedLogData) {
       item.token.toLowerCase() === process.env.CONTRACT_ADDRESS.toLowerCase()
   );
 
+  const considerationSideNfts = consideration.some(
+    (item) =>
+      item.token.toLowerCase() === process.env.CONTRACT_ADDRESS.toLowerCase()
+  );
+
+  if (!offerSideNfts && !considerationSideNfts) return null;
+
   // if nfts are on the offer side, then consideration is the total price, otherwise the offer is the total price
   if (offerSideNfts) {
     const totalConsiderationAmount = consideration.reduce(_reducer, 0);
