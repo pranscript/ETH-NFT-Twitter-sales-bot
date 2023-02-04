@@ -71,6 +71,7 @@ async function monitorContract() {
       };
       let tokens = [];
       let totalPrice = 0;
+      let countPriceCalc = 0;
       let buyer;
       let seller;
       let market;
@@ -96,6 +97,7 @@ async function monitorContract() {
             if(logAddress in markets){
                 market = _.get(markets, logAddress);
                 if (saleEventTypes.includes(log.topics[0])) {
+                    countPriceCalc = countPriceCalc + 1;
                     const decodedLogData = web3.eth.abi.decodeLog(
                       market.logDecoder,
                       log.data,
@@ -131,6 +133,7 @@ async function monitorContract() {
         }else if (recipient in markets){
             market = _.get(markets, recipient);
             if (logAddress == recipient && saleEventTypes.includes(log.topics[0])) {
+                countPriceCalc = countPriceCalc + 1;
                 const decodedLogData = web3.eth.abi.decodeLog(
                   market.logDecoder,
                   log.data,
@@ -165,6 +168,9 @@ async function monitorContract() {
             multiSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
         }else{
             console.log("Individual Sale")
+            if(market.name == 'Opensea ⚓️' && countPriceCalc == 2*tokens.length){
+              totalPrice = totalPrice/2; // To handle opensea's private trades, just a workaround
+            }
             if(process.env.IS_RARITY_DATA == true && process.env.SET_RARITY == true && parseInt(rarity[tokens[0]]) > process.env.RARITY){
               console.log("Individual sale above minimum rarity set. Not processing");
               return
