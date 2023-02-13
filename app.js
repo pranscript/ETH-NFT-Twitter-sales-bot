@@ -165,7 +165,7 @@ async function monitorContract() {
         tokens = _.uniq(tokens);
         if(tokens.length>1){
             console.log("Sweep")
-            multiSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller});
+            multiSaleQ.enqueue({'tokens':tokens,'transactionHash':transactionHash,'totalPrice':totalPrice,'currency':currency,'market':market,'buyer': buyer, 'seller': seller, 'recepient':recipient});
         }else{
             console.log("Individual Sale")
             if(market.name == 'Opensea ⚓️' && countPriceCalc == 2*tokens.length){
@@ -237,12 +237,19 @@ multiSaleEmitter.on('processMultiSale', async () => {
     let mediaID = [];
     await getMediaID(data['tokens']).then(res => {
                 mediaID = res;
-                multiSaleTweetWithImage(`${tweetText}\n💎 Buyer: ${buyerName.username == null? data['buyer'].substring(0,8):buyerName.username}\b`+
+                if(data['recepient'] in {'0x39da41747a83aee658334415666f3ef92dd0d541':'blur','0x000000000000Ad05Ccc4F10045630fb830B95127':'blur'}){
+                  multiSaleTweetWithImage(`${tweetText}\n`+
+                    `#mekaverse #gundam #NFTJapan #mecha\b`+
+                    `https://etherscan.io/tx/${data['transactionHash']}`
+                  ,mediaID) 
+                }else{
+                  multiSaleTweetWithImage(`${tweetText}\n💎 Buyer: ${buyerName.username == null? data['buyer'].substring(0,8):buyerName.username}\b`+
                     `${statsBuyer.coilBalance ==0?``:`\b💵 Wallet Balance: ${(+statsBuyer.coilBalance).toFixed(3)} ETH ($${(+(USDValue.amount*statsBuyer.coilBalance)).toFixed(0)})`}\b`+
                     `${statsBuyer.nftValue ==0?``:`\b💰 NFT Portfolio Value: ${(+statsBuyer.nftValue).toFixed(3)} ETH ($${(+(USDValue.amount*statsBuyer.nftValue)).toFixed(0)})`}\n`+
                     `#mekaverse #gundam #NFTJapan #mecha\b`+
                     `https://etherscan.io/tx/${data['transactionHash']}`
                   ,mediaID) 
+                }
               })
             }
 })
