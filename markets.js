@@ -76,8 +76,71 @@ const markets = {
         },
       ],
     },
-    // Opensea - Seaport
+    // Opensea - Seaport 1.1
     '0x00000000006c3852cbef3e08e8df289169ede581': {
+      name: 'Opensea ⚓️',
+      site: 'https://opensea.io/assets/',
+      logDecoder: [
+        {
+          type: 'bytes32',
+          name: 'orderHash',
+        },
+        {
+          type: 'address',
+          name: 'recipient',
+        },
+        {
+          type: 'tuple[]',
+          name: 'offer',
+          components: [
+            {
+              type: 'uint8',
+              name: 'itemType',
+            },
+            {
+              type: 'address',
+              name: 'token',
+            },
+            {
+              type: 'uint256',
+              name: 'identifier',
+            },
+            {
+              type: 'uint256',
+              name: 'amount',
+            },
+          ],
+        },
+        {
+          type: 'tuple[]',
+          name: 'consideration',
+          components: [
+            {
+              type: 'uint8',
+              name: 'itemType',
+            },
+            {
+              type: 'address',
+              name: 'token',
+            },
+            {
+              type: 'uint256',
+              name: 'identifier',
+            },
+            {
+              type: 'uint256',
+              name: 'amount',
+            },
+            {
+              type: 'address',
+              name: 'recipient',
+            },
+          ],
+        },
+      ],
+    },
+    // Opensea - Seaport 1.4
+    '0x00000000000001ad428e4906aE43D8F9852d0dD6': {
       name: 'Opensea ⚓️',
       site: 'https://opensea.io/assets/',
       logDecoder: [
