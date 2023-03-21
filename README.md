@@ -33,7 +33,7 @@
 - Enter details in ```.env``` file (Details in ```.env``` file too)
   - Twitter API keys (mandatory)
   - ``` CONTRACT_ADDRESS``` - Collection's contract address (mandatory)
-  - ``` ALCHEMY_API_KEY``` - [Alchemy API](*https://www.alchemy.com/*) (mandatory)
+  - ``` ALCHEMY_API_KEY``` - [Alchemy API](https://www.alchemy.com/) (mandatory)
   - ``` IS_OPENSEA``` & ```X_API_KEY ``` - Opensea variable and Opensea API Key (optional)
   - ``` IS_RARITY_DATA``` - Rarity data inside ```rarity.json``` (optional)
   - ``` SET_RARITY``` - True or False if there is conditional rarity (optional)
