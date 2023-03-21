@@ -77,7 +77,7 @@ async function threadTweetWithImage(mainTweetText, imageUrl, buyer, seller, toke
             twitterClient.post('statuses/update', tweet, (error, tweet, response) => {
                 if (!error) {
                     console.log(`Successfully tweeted main tweet: ${mainTweetText}`);
-                    if(isSubtweet == true){
+                    if(isSubtweet == 'true'){
                         const subTweet = {
                             status: subTweetText,
                             in_reply_to_status_id: tweet.id_str,
