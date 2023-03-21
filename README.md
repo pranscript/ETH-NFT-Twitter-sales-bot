@@ -52,13 +52,14 @@
   - Go to Etherscan, search collection's contract, then contract tab, scroll down to "Contract ABI". Export ABI as RAW/Text format
   - Copy and paste it inside ```abi.json``` file
 
-- Replace rarity.json data with your data in same format (optional)
+- Replace ```rarity.json``` data with your data in same format (optional)
 - To run locally, ``` node app.js ```
 - To run on heroku, choose basic $7 Dyno in worker mode (no web), enter all ```.env``` values (case sensitive) in heroku config vars inside settings and then follow heroku deploy method by using these commands
   - ```heroku login```
   - ```git add .```
   - ```git commit -m "commit"```
   - ```git push heroku master```
+  - ```heroku logs --tail```
 
 
 ## Credits and Acknowledgments
