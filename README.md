@@ -29,26 +29,27 @@
 
 ## How to run
 
-- Clone the repo and then run ```npm install```
-- Enter details in ```.env``` file (Details in ```.env``` file too)
+- Star the repo for additional Karma, clone it and then run ```npm install```
+- Enter details in ```.env``` file (More information is in ```.env``` file too)
   - Twitter API keys (mandatory)
   - ``` CONTRACT_ADDRESS``` - Collection's contract address (mandatory)
   - ``` ALCHEMY_API_KEY``` - [Alchemy API](https://www.alchemy.com/) (mandatory)
-  - ``` IS_OPENSEA``` & ```X_API_KEY ``` - Opensea variable and Opensea API Key (optional)
-  - ``` IS_RARITY_DATA``` - Rarity data inside ```rarity.json``` (optional)
-  - ``` SET_RARITY``` - True or False if there is conditional rarity (optional)
+  - ``` IS_OPENSEA```  - True or False if you want to use Opensea's API (optional, default is Looksrare's API)
+  - ```X_API_KEY``` - Opensea's API key (mandatory if ```IS_OPENSEA=true```)
+  - ``` IS_RARITY_DATA``` - True or False if you have put your rarity data inside ```rarity.json``` (optional)
+  - ``` SET_RARITY``` - True or False if you want to put rarity conditions while processing transactions (optional)
   - ``` RARITY``` - Rarity of NFT above which sales are not processed (must if ``` SET_RARITY=true```)
   - ``` TOTAL_NFT``` - Total number of NFTs in the collection (mandatory)
-  - ``` MIN_ETH_PRICE``` & ``` MIN_WETH_PRICE``` - Conditional MIN and MAX transaction value below which transactions are not processed (optional)
+  - ``` MIN_ETH_PRICE``` & ``` MIN_WETH_PRICE``` - Conditional MIN and MAX transaction value below which transactions are not processed (optional, only checks values for individual sales)
   - ``` Delay``` - Delay in processing (mandatory, default value is optimum)
-  - ``` OPENSEA_SLUG``` - Collection name in Opensea's URL (mandatory)
-  - ``` TOKEN_NAME``` - NFT token name (mandatory)
-  - ``` HASHTAGS``` - Hashtags to put in the tweet (optional)
+  - ``` OPENSEA_SLUG``` - Collection name in Opensea's URL of your project (mandatory)
+  - ``` TOKEN_NAME``` - NFT token name you want to put in the tweets (mandatory)
+  - ``` HASHTAGS``` - Hashtags to put in the tweets (optional)
   - ``` IS_SUBTWEET``` - True or false if you need extra info in the subtweet (optional)
   - ``` INTELLI``` - [2.5Intelligence](https://2.5.dev/) (mandatory if ``` IS_SUBTWEET = true```)
   - ``` NFTGO``` - [NFTGO](https://nftgo.io/) (mandatory if ``` IS_SUBTWEET = true```)
 
-- Replace abi.json data with your raw data
+- Replace ```abi.json``` data with your raw data
   - Go to Etherscan, search collection's contract, then contract tab, scroll down to "Contract ABI". Export ABI as RAW/Text format
   - Copy and paste it inside ```abi.json``` file
 
@@ -60,6 +61,16 @@
   - ```git commit -m "commit"```
   - ```git push heroku master```
   - ```heroku logs --tail```
+
+## Limits to remember
+
+- Opensea API limit - 4 requests / sec
+- Looksrare API Limit - 2 requests / sec
+- Twitter Post tweet limits - 300 tweets / 3 hours
+  - Subtweet is counted too
+
+- Alchemy API limits - Free tier enough to not worry about
+- NFTGO - 5 requests / sec
 
 
 ## Credits and Acknowledgments
@@ -81,4 +92,4 @@ Please include proper attribution to my original repo if you fork, modify or uti
 
 ## Donations
 
-ETH - 0x64Dc82955841fD5Ef8155D5cE0b12a77DEb88879
+ETH/BSC - 0x64Dc82955841fD5Ef8155D5cE0b12a77DEb88879
