@@ -5,6 +5,8 @@ const _ = require('lodash');
 const { ethers } = require('ethers');
 require('dotenv').config();
 const { currencies } = require('./currencies.js');
+const sdk = require('api')('@nftgo/v1.0#i65d19lewn3l7h');
+sdk.auth(process.env.NFTGO);
 
 function _reducer(previous, current) {
   const currency = currencies[current.token.toLowerCase()];
@@ -150,50 +152,120 @@ async function getUSDValue(currency) {
   }
 }
 
-// get address stats 
-async function getStats(address) {
+// To get opensea floor
+async function getSlug() {
+  //console.log("token id is - " + tokenId)
   try {
     const assetName = await retry(
       async (bail) => {
+        // retrieve metadata for asset from opensea
         const response = await axios.get(
-          `https://rutherford.5.dev/api/scores/${address}`
-          ,
-          {
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + process.env.Intelli,
-            },
-          }
+          `https://api.opensea.io/collection/${process.env.OPENSEA_SLUG}`
         );
         
-        const data = response.data;
-
-        return {
-            coilBalance: _.get(data.portfolioStats, 'coinPortfolioValue'),
-            nftValue: _.get(data.portfolioStats, 'collectiblePortfolioValue'),
-            labels: _.get(data, 'labels')
-        };  
+        const data = response.data.collection;
+        
+          return {
+            stats: _.get(data, 'stats')
+          };  
       },
       {
-        retries: 0
+        retries: 0,
+        minTimeout: 5000
       }
     );
 
     return assetName;
   } catch (error) {
-        return {
-            coilBalance: 0,
-            nftValue: 0,
-            labels: []
-        };
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      return {
+        floor_price: null
+      };
+    } else {
+      console.error(error.message);
+      return {
+        floor_price: null
+      };
+    }
   }
+}
+
+// get address stats 
+async function getStats(address) {
+    try {
+      const assetName = await retry(
+        async (bail) => {
+          const response = await axios.get(
+            `https://rutherford.5.dev/api/scores/${address}`
+            ,
+            {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + process.env.INTELLI,
+              },
+            }
+          );
+          
+          const data = response.data;
+
+          return {
+              coilBalance: _.get(data.portfolioStats, 'coinPortfolioValue'),
+              nftValue: _.get(data.portfolioStats, 'collectiblePortfolioValue'),
+              labels: _.get(data, 'labels')
+          };  
+        },
+        {
+          retries: 0
+        }
+      );
+
+      return assetName;
+    } catch (error) {
+          return {
+              coilBalance: 0,
+              nftValue: 0,
+              labels: []
+          };
+    }
+}
+
+// get flipped count
+async function getFlipped() {
+    try {
+      const assetName = await retry(
+        async (bail) => {
+          const response = await sdk.get_metrics_eth_v1_nft__contract_address___token_id__metrics_get({
+            contract_address: process.env.CONTRACT_ADDRESS,
+            token_id: tokenID
+            })
+          
+          return {
+            flippedCount: res.sale_num_all
+          };
+
+        },
+        {
+          retries: 0
+        }
+      );
+
+      return assetName;
+    } catch (error) {
+          return {
+            flippedCount: 'unknown'
+        };  
+    }
 }
 
 module.exports = {
   getSeaportSalePrice: getSeaportSalePrice,
   getTokenData: getTokenData,
   getUsername:getUsername,
+  getSlug:getSlug,
+  getFlipped:getFlipped,
   getUSDValue:getUSDValue,
   getStats:getStats
 };

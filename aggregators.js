@@ -15,3 +15,4 @@ const aggregators = {
 module.exports = {
     aggregators: aggregators,
   };
+  

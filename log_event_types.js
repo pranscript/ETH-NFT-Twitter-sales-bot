@@ -15,3 +15,4 @@ const transferEventTypes = [
     saleEventTypes: saleEventTypes,
   };
   
+  

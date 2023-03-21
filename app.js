@@ -5,7 +5,7 @@ const retry = require('async-retry');
 const _ = require('lodash');
 const { markets } = require('./markets.js');
 const { aggregators } = require('./aggregators.js');
-const { getTokenData, getSeaportSalePrice, getUsername, getUSDValue, getStats } = require('./utils.js');
+const { getTokenData, getSeaportSalePrice, getUsername, getUSDValue, getStats, getSlug } = require('./utils.js');
 const { currencies } = require('./currencies.js');
 const { transferEventTypes, saleEventTypes } = require('./log_event_types.js');
 const { threadTweetWithImage, multiSaleTweetWithImage, getMediaID } = require('./tweet');
@@ -30,8 +30,9 @@ async function monitorContract() {
   const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
 
   //Test transaction for both individual and sweep. It will insert this the first time program is run. 
-  //singleSaleQ.enqueue({'tokens':[1747],'transactionHash':'0x8a0f8c886b8a66fd2b76383b0a1f83fc1bb415e3e8f43301bee659a404960e7c','totalPrice':0.33,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x0f7776F7E48814923a967FaE5CE6F612eAB4e4BD', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
+  //singleSaleQ.enqueue({'tokens':[207],'transactionHash':'0x8a0f8c886b8a66fd2b76383b0a1f83fc1bb415e3e8f43301bee659a404960e7c','totalPrice':0.33,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x0f7776F7E48814923a967FaE5CE6F612eAB4e4BD', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
   //multiSaleQ.enqueue({'tokens':[1717,3382,92,5925,3603,3322],'transactionHash':'0x00340b91ecac9f73d562fb1350e8b5a50cd5363aa3df0eaf4c3e2989f3992893','totalPrice':2.59,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x2B7BDb4aE3f24ACD1d32D456Dee034b6d2184d59', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
+  //multiSaleQ.enqueue({'tokens':[1717,3382,92,5925,3603,3322],'transactionHash':'0x00340b91ecac9f73d562fb1350e8b5a50cd5363aa3df0eaf4c3e2989f3992893','totalPrice':2.59,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x2B7BDb4aE3f24ACD1d32D456Dee034b6d2184d59', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77', 'recepient':'0x00000000006c3852cbef3e08e8df289169ede581'});
   
   contract.events
     .Transfer({})
@@ -195,10 +196,11 @@ async function monitorContract() {
 
 const singleSaleEmitter  = new events.EventEmitter() 
 singleSaleEmitter.on('processNextSale', async () => {
-    console.log("Checking for Individual Sale ..");    
+    console.log(`Checked for Individual Sale.. Next check in ${process.env.DELAY} millisec`);    
     if (!singleSaleQ.isEmpty()){ 
         console.log("Found!! Processing Individual Sale")   
         let data = singleSaleQ.dequeue();
+        let stats = await getSlug();
         let USDValue = { amount:0 };
         if(data['currency'].name === 'ETH' || data['currency'].name === 'WETH'){
             USDValue = await getUSDValue(data['currency'].name);
@@ -206,8 +208,8 @@ singleSaleEmitter.on('processNextSale', async () => {
         await getTokenData(data['tokens'][0]).then(tokenData => {
           if(tokenData !== 'error'){
             console.log("Successfully fetched NFT Metadata");
-            let tweetText = `🤖 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}${process.env.IS_RARITY_DATA == true?`\b🎯 Rarity - ${rarity[data['tokens'][0]]}/${process.env.TOTAL_NFT}` :``}\n#mekaverse #gundam #NFTJapan #mecha\b${data['market'].site}${process.env.CONTRACT_ADDRESS}/${data['tokens'][0]}`
-            threadTweetWithImage(tweetText,_.get(tokenData, 'image_url'), data['buyer'], data['seller'], data['tokens'][0]);
+            let tweetText = `🚀 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}${process.env.IS_RARITY_DATA === 'true'?`\b🎯 Rarity - ${rarity[data['tokens'][0]]}/${process.env.TOTAL_NFT}` :``}${stats.stats.floor_price!=null?`\b📈 Floor - ${stats.stats.floor_price} Ξ`:""}\n${process.env.HASHTAGS}\b${data['market'].site}\b${process.env.CONTRACT_ADDRESS}/${data['tokens'][0]}`
+            threadTweetWithImage(tweetText,_.get(tokenData, 'image_url'), data['buyer'], data['seller'], data['tokens'][0], process.env.IS_SUBTWEET);
           }
         })
     }
@@ -216,7 +218,7 @@ singleSaleEmitter.on('processNextSale', async () => {
 
 const multiSaleEmitter = new events.EventEmitter() 
 multiSaleEmitter.on('processMultiSale', async () => {
-  console.log("Checking for Sweep .."); 
+  console.log(`Checked for Sweep Sales.. Next check in ${process.env.DELAY*5} millisec`); 
   let buyerName=null;
   let statsBuyer= {
     coilBalance: 0,
@@ -233,20 +235,23 @@ multiSaleEmitter.on('processMultiSale', async () => {
     buyerName = await getUsername(data['buyer']); 
     statsBuyer = await getStats(data['buyer']);
 
-    let tweetText =` ${data['tokens'].length} Mekas bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)})`: ``}`;
+    // Tweet Text for Sweeps
+    // Change carefully if required
+    
+    let tweetText =`🚀 ${data['tokens'].length} ${process.env.TOKEN_NAME} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)})`: ``}`;
     let mediaID = [];
     await getMediaID(data['tokens']).then(res => {
                 mediaID = res;
                 if(data['recepient'] in {'0x39da41747a83aee658334415666f3ef92dd0d541':'blur','0x000000000000Ad05Ccc4F10045630fb830B95127':'blur'}){
                   multiSaleTweetWithImage(`${tweetText}\n`+
-                    `#mekaverse #gundam #NFTJapan #mecha\b`+
+                    `${process.env.HASHTAGS}\b`+
                     `https://etherscan.io/tx/${data['transactionHash']}`
                   ,mediaID) 
                 }else{
                   multiSaleTweetWithImage(`${tweetText}\n💎 Buyer: ${buyerName.username == null? data['buyer'].substring(0,8):buyerName.username}\b`+
                     `${statsBuyer.coilBalance ==0?``:`\b💵 Wallet Balance: ${(+statsBuyer.coilBalance).toFixed(3)} ETH ($${(+(USDValue.amount*statsBuyer.coilBalance)).toFixed(0)})`}\b`+
                     `${statsBuyer.nftValue ==0?``:`\b💰 NFT Portfolio Value: ${(+statsBuyer.nftValue).toFixed(3)} ETH ($${(+(USDValue.amount*statsBuyer.nftValue)).toFixed(0)})`}\n`+
-                    `#mekaverse #gundam #NFTJapan #mecha\b`+
+                    `${process.env.HASHTAGS}\b`+
                     `https://etherscan.io/tx/${data['transactionHash']}`
                   ,mediaID) 
                 }
