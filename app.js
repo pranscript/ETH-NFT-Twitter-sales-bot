@@ -1,5 +1,5 @@
 
-const { createAlchemyWeb3 } = require('@alch/alchemy-web3');
+const { Alchemy, Network, Contract } = require('alchemy-sdk');
 const { ethers } = require('ethers');
 const retry = require('async-retry');
 const _ = require('lodash');
@@ -10,6 +10,7 @@ const { currencies } = require('./currencies.js');
 const { transferEventTypes, saleEventTypes } = require('./log_event_types.js');
 const { threadTweetWithImage, multiSaleTweetWithImage, getMediaID } = require('./tweet');
 const abi = require('./abi.json');
+const marketABI = require('./marketABI.json');
 const rarity = require('./rarity.json');
 const Queue = require('queue-fifo');
 const singleSaleQ = new Queue()
@@ -18,29 +19,27 @@ const events = require('events');
 require('dotenv').config();
 
 // connect to Alchemy websocket
-const web3 = createAlchemyWeb3(
-  `wss://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`
-);
+const web3 = new Alchemy({
+  apiKey: process.env.ALCHEMY_API_KEY, // Replace with your Alchemy API Key.
+  network: Network.ETH_MAINNET, // Replace with your network.
+});
 
 let lastTransactionHash;
 
 async function monitorContract() {
   
   console.log("Started monitoring ethereum events");
-  const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
-
+  const provider = await web3.config.getWebSocketProvider();
+  const contract = new Contract(process.env.CONTRACT_ADDRESS, abi, provider);
+  const interface = new ethers.utils.Interface(marketABI);
   //Test transaction for both individual and sweep. It will insert this the first time program is run. 
   //singleSaleQ.enqueue({'tokens':[207],'transactionHash':'0x8a0f8c886b8a66fd2b76383b0a1f83fc1bb415e3e8f43301bee659a404960e7c','totalPrice':0.33,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x0f7776F7E48814923a967FaE5CE6F612eAB4e4BD', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
   //multiSaleQ.enqueue({'tokens':[1717,3382,92,5925,3603,3322],'transactionHash':'0x00340b91ecac9f73d562fb1350e8b5a50cd5363aa3df0eaf4c3e2989f3992893','totalPrice':2.59,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x2B7BDb4aE3f24ACD1d32D456Dee034b6d2184d59', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
   //multiSaleQ.enqueue({'tokens':[1717,3382,92,5925,3603,3322],'transactionHash':'0x00340b91ecac9f73d562fb1350e8b5a50cd5363aa3df0eaf4c3e2989f3992893','totalPrice':2.59,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x2B7BDb4aE3f24ACD1d32D456Dee034b6d2184d59', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77', 'recepient':'0x00000000006c3852cbef3e08e8df289169ede581'});
   
-  contract.events
-    .Transfer({})
-    .on('connected', (subscriptionId) => {
-      console.log(subscriptionId);
-    })
-    .on('data', async (data) => {
-      const transactionHash = data.transactionHash.toLowerCase();
+  contract.on('Transfer', async (...params) => {
+      const event = params[params.length - 1];
+      const transactionHash = event.transactionHash.toLowerCase();
 
       //ct duplicate transaion - skip process
       if (transactionHash == lastTransactionHash) {
@@ -52,7 +51,7 @@ async function monitorContract() {
       // attempt to retrieve the receipt, sometimes not available straight away
       const receipt = await retry(
         async (bail) => {
-          const rec = await web3.eth.getTransactionReceipt(transactionHash);
+          const rec = await web3.core.getTransactionReceipt(transactionHash);
 
           if (rec == null) {
             throw new Error('receipt not found, try again');
@@ -88,7 +87,7 @@ async function monitorContract() {
         }
 
         if (log.data == '0x' && transferEventTypes.includes(log.topics[0]) && logAddress == process.env.CONTRACT_ADDRESS.toLowerCase()  ) {
-            const tokenId = web3.utils.hexToNumberString(log.topics[3]);
+            const tokenId = ethers.BigNumber.from(log.topics[3]).toString();
             buyer = ethers.utils.defaultAbiCoder.decode(['address'], log.topics[2]).toString();
             seller = ethers.utils.defaultAbiCoder.decode(['address'], log.topics[1]).toString();
             tokens.push(tokenId);
@@ -99,11 +98,10 @@ async function monitorContract() {
                 market = _.get(markets, logAddress);
                 if (saleEventTypes.includes(log.topics[0])) {
                     countPriceCalc = countPriceCalc + 1;
-                    const decodedLogData = web3.eth.abi.decodeLog(
-                      market.logDecoder,
-                      log.data,
-                      []
-                    );
+                    const decodedLogData = interface.parseLog({
+                      data: log.data,
+                      topics: [...log.topics]
+                    })?.args;
           
                     if (market.name == 'Opensea ⚓️') {
                       totalPrice += Number(getSeaportSalePrice(decodedLogData))
@@ -135,11 +133,10 @@ async function monitorContract() {
             market = _.get(markets, recipient);
             if (logAddress == recipient && saleEventTypes.includes(log.topics[0])) {
                 countPriceCalc = countPriceCalc + 1;
-                const decodedLogData = web3.eth.abi.decodeLog(
-                  market.logDecoder,
-                  log.data,
-                  []
-                );
+                const decodedLogData = interface.parseLog({
+                  data: log.data,
+                  topics: [...log.topics]
+                })?.args;
       
                 if (market.name == 'Opensea ⚓️') {
                   totalPrice += Number(getSeaportSalePrice(decodedLogData));
@@ -183,14 +180,6 @@ async function monitorContract() {
         }
       
     })
-    .on('changed', (event) => {
-      console.log('change');
-    })
-    .on('error', (error, receipt) => {
-      // if the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-      console.error(error);
-      console.error(receipt);
-    });
 }
 
 

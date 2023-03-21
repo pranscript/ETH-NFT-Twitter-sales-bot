@@ -17,7 +17,7 @@
     },
     "homepage": "https://github.com/pranscript/ETH-NFT-Twitter-sales-bot#readme",
     "dependencies": {
-      "@alch/alchemy-web3": "^1.1.9",
+      "alchemy-sdk": "2.4.3",
       "api": "^4.5.2",
       "async-retry": "^1.3.3",
       "axios": "^0.24.0",
