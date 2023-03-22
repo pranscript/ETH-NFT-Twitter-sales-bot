@@ -30,7 +30,7 @@ async function monitorContract() {
   
   console.log("Started monitoring ethereum events");
   const provider = await web3.config.getWebSocketProvider();
-  const contract = new Contract(process.env.CONTRACT_ADDRESS, abi, provider);
+  const contract = new Contract(process.env.CONTRACT_ADDRESS.toLowerCase(), abi, provider);
   const interface = new ethers.utils.Interface(marketABI);
   //Test transaction for both individual and sweep. It will insert this the first time program is run. 
   //singleSaleQ.enqueue({'tokens':[207],'transactionHash':'0x8a0f8c886b8a66fd2b76383b0a1f83fc1bb415e3e8f43301bee659a404960e7c','totalPrice':0.33,'currency':{name: 'ETH',decimals: 18,threshold: 1,},'market':{name: 'Opensea ⚓️',site: 'https://opensea.io/assets/'},'buyer': '0x0f7776F7E48814923a967FaE5CE6F612eAB4e4BD', 'seller': '0x8E8A152Ea0eF5324307A37443966f7B815A7aB77'});
@@ -197,7 +197,7 @@ singleSaleEmitter.on('processNextSale', async () => {
         await getTokenData(data['tokens'][0]).then(tokenData => {
           if(tokenData !== 'error'){
             console.log("Successfully fetched NFT Metadata");
-            let tweetText = `🚀 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}${process.env.IS_RARITY_DATA === 'true'?`\b🎯 Rarity - ${rarity[data['tokens'][0]]}/${process.env.TOTAL_NFT}` :``}${stats.stats.floor_price!=null?`\b📈 Floor - ${stats.stats.floor_price} Ξ`:""}\n${process.env.HASHTAGS}\b${data['market'].site}\b${process.env.CONTRACT_ADDRESS}/${data['tokens'][0]}`
+            let tweetText = `🚀 ${_.get(tokenData,'assetName',`#` + data['tokens'][0])} bought for ${(+data['totalPrice']).toFixed(3)} ${data['currency'].name} ${data['currency'].name === 'ETH' || data['currency'].name === 'WETH'? `($${(+(USDValue.amount*data['totalPrice'])).toFixed(0)}) `: ``}${process.env.IS_RARITY_DATA === 'true'?`\b🎯 Rarity - ${rarity[data['tokens'][0]]}/${process.env.TOTAL_NFT}` :``}${stats.stats.floor_price!=null?`\b📈 Floor - ${stats.stats.floor_price} Ξ`:""}\n${process.env.HASHTAGS}\b${data['market'].site}\b${process.env.CONTRACT_ADDRESS.toLowerCase()}/${data['tokens'][0]}`
             threadTweetWithImage(tweetText,_.get(tokenData, 'image_url'), data['buyer'], data['seller'], data['tokens'][0], process.env.IS_SUBTWEET);
           }
         })

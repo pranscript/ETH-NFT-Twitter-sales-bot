@@ -57,7 +57,7 @@ async function getTokenData(tokenId) {
         // retrieve metadata for asset from looksrare
         if(process.env.IS_OPENSEA == true){
           const response = await axios.get(
-            `https://api.opensea.io/api/v1/asset/${process.env.CONTRACT_ADDRESS}/${parseInt(tokenId)}`,
+            `https://api.opensea.io/api/v1/asset/${process.env.CONTRACT_ADDRESS.toLowerCase()}/${parseInt(tokenId)}`,
             {
               headers: {
                 'X-API-KEY': process.env.X_API_KEY,
@@ -73,7 +73,7 @@ async function getTokenData(tokenId) {
           };
         }else{
           const response = await axios.get(
-            `https://api.looksrare.org/api/v1/tokens?collection=${process.env.CONTRACT_ADDRESS}&tokenId=${parseInt(tokenId)}`
+            `https://api.looksrare.org/api/v1/tokens?collection=${process.env.CONTRACT_ADDRESS.toLowerCase()}&tokenId=${parseInt(tokenId)}`
           );
 
           const data = response.data.data
@@ -238,7 +238,7 @@ async function getFlipped() {
       const assetName = await retry(
         async (bail) => {
           const response = await sdk.get_metrics_eth_v1_nft__contract_address___token_id__metrics_get({
-            contract_address: process.env.CONTRACT_ADDRESS,
+            contract_address: process.env.CONTRACT_ADDRESS.toLowerCase(),
             token_id: tokenID
             })
           
