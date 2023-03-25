@@ -44,7 +44,12 @@ async function threadTweetWithImage(mainTweetText, imageUrl, buyer, seller, toke
             statsBuyer.labels.forEach(element => {
                 if(element.name === 'whale') {
                     buyerLabel = buyerLabel + `🐳`
-                }
+                    if(element.name === 'smart-money') buyerLabel = buyerLabel + '🧠'
+                    else if(element.name === 'paperhands') buyerLabel = buyerLabel + '🔃'
+                }else{
+                    if(element.name === 'smart-money') buyerLabel = buyerLabel + '🧠'
+                    if(element.name === 'paperhands') buyerLabel = buyerLabel + '🔃'
+                }  
             });
         }catch(error){
             console.log("Error in processing buyer stats")
@@ -53,6 +58,11 @@ async function threadTweetWithImage(mainTweetText, imageUrl, buyer, seller, toke
             statsSeller.labels.forEach(element => {
                 if(element.name === 'whale') {
                     sellerLabel = sellerLabel + `🐳`
+                    if(element.name === 'smart-money') sellerLabel = sellerLabel + '🧠'
+                    else if(element.name === 'paperhands') sellerLabel = sellerLabel + '🔃'
+                }else{
+                    if(element.name === 'smart-money') sellerLabel = sellerLabel + '🧠'
+                    if(element.name === 'paperhands') sellerLabel = sellerLabel + '🔃'
                 }
             });
         }catch(error){
