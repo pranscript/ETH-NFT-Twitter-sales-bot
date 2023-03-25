@@ -1,6 +1,6 @@
 # ETH NFT Twitter Sales Bot 🤖
 
- Monitors NFT sales through Ethereum logs, fetches metadata from either Looksrare API or Opensea API and posts it on Twitter. There is an added delay in processing transactions for stability purpose and to stay within API limits.
+ Monitors NFT sales through Ethereum logs, fetches metadata from either Looksrare API or Opensea API and posts it on Twitter.
 
 ## Live Demo
 
