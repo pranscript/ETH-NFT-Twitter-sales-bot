@@ -72,6 +72,14 @@
 - Alchemy API limits - Free tier enough to not worry about
 - NFTGO - 5 requests / sec
 
+## Example Images
+
+![Individual Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/individualSale.jpg)
+
+![Subtweet](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/subtweet.jpg)
+
+![Sweep Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/sweep.jpg)
+
 
 ## Credits and Acknowledgments
 
