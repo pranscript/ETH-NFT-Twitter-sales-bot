@@ -74,9 +74,11 @@
 
 ## Example Images
 
-![Individual Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/individualSale.jpg) ![Sweep Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/sweep.jpg)
+![Individual Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/individualSale.jpg)
 
 ![Subtweet](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/subtweet.jpg)
+
+![Sweep Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/sweep.jpg)
 
 
 ## Credits and Acknowledgments
