@@ -27,6 +27,10 @@
 - Supports rarity conditions
 - Supports minimum price conditions
 
+## Contact to deploy
+
+[pran_eth](https://twitter.com/pran_eth) - Contact me to deploy it for you
+
 ## How to run
 
 - Star the repo for additional Karma, clone it and then run ```npm install```
@@ -93,10 +97,6 @@ This repo is a modification of repos [NFT Sales Twitter Bot](https://github.com/
 This code is licensed under the [ISC License](https://choosealicense.com/licenses/isc/).
 
 Please include proper attribution to my original repo if you fork, modify or utilize this repo in any way. Thank you!
-
-## Contact to deploy
-
-[pran_eth](https://twitter.com/pran_eth) - Though the deployment is straightforward, if you need help then you can contact me on my twitter.
 
 ## Donations
 
