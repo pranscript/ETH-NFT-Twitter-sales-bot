@@ -27,13 +27,13 @@
 - Supports rarity conditions
 - Supports minimum price conditions
 
-## Contact to deploy
-
-[pran_eth](https://twitter.com/pran_eth) - Contact me to deploy it for you
-
-## How to run
+## How to setup
 
 [Follow these steps](guide/steps.md)
+
+## Contact to Deploy
+
+[pran_eth](https://twitter.com/pran_eth)
 
 ## Example Images
 
