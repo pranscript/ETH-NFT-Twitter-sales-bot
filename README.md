@@ -33,7 +33,7 @@
 
 ## Contact to Deploy
 
-[pran_eth](https://twitter.com/pran_eth)
+[pran_eth](https://twitter.com/pran_eth) - You can DM me here
 
 ## Example Images
 

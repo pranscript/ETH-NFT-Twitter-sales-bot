@@ -4,27 +4,27 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/pranscript/ETH-NFT-Twitter-sales-bot.git"
+        "type": "git",
+        "url": "git+https://github.com/pranscript/ETH-NFT-Twitter-sales-bot.git"
     },
     "author": "Pranjal (@pranscript)",
     "license": "ISC",
     "bugs": {
-      "url": "https:/https://github.com/pranscript/ETH-NFT-Twitter-sales-bot/issues"
+        "url": "https:/https://github.com/pranscript/ETH-NFT-Twitter-sales-bot/issues"
     },
     "homepage": "https://github.com/pranscript/ETH-NFT-Twitter-sales-bot#readme",
     "dependencies": {
-      "alchemy-sdk": "2.4.3",
-      "api": "^4.5.2",
-      "async-retry": "^1.3.3",
-      "axios": "^0.24.0",
-      "dotenv": "^16.0.1",
-      "ethers": "^5.5.4",
-      "lodash": "^4.17.21",
-      "queue-fifo": "^0.2.6",
-      "twit": "^2.2.11"
+        "alchemy-sdk": "2.4.3",
+        "api": "^4.5.2",
+        "async-retry": "^1.3.3",
+        "axios": "^0.24.0",
+        "dotenv": "^16.0.1",
+        "ethers": "^5.5.4",
+        "lodash": "^4.17.21",
+        "queue-fifo": "^0.2.6",
+        "twit": "^2.2.11"
     }
-  }
+}

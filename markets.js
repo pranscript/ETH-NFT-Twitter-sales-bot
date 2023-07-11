@@ -25,7 +25,7 @@ const markets = {
   // OpenSea Wyvern
   '0x7f268357a8c2552623316e2562d90e642bb538e5': {
     name: 'OpenSea 🌊',
-    site: 'https://opensea.io/assets/',
+    site: 'https://opensea.io/assets/ethereum/',
     logDecoder: [
       {
         type: 'bytes32',
@@ -79,7 +79,7 @@ const markets = {
   // Opensea - Seaport
   '0x00000000006c3852cbef3e08e8df289169ede581': {
     name: 'Opensea ⚓️',
-    site: 'https://opensea.io/assets/',
+    site: 'https://opensea.io/assets/ethereum/',
     logDecoder: [
       {
         type: 'bytes32',
@@ -139,10 +139,73 @@ const markets = {
       },
     ],
   },
-  // Opensea - Seaport
+  // Opensea - new
   '0x00000000000001ad428e4906ae43d8f9852d0dd6': {
     name: 'Opensea ⚓️',
-    site: 'https://opensea.io/assets/',
+    site: 'https://opensea.io/assets/ethereum/',
+    logDecoder: [
+      {
+        type: 'bytes32',
+        name: 'orderHash',
+      },
+      {
+        type: 'address',
+        name: 'recipient',
+      },
+      {
+        type: 'tuple[]',
+        name: 'offer',
+        components: [
+          {
+            type: 'uint8',
+            name: 'itemType',
+          },
+          {
+            type: 'address',
+            name: 'token',
+          },
+          {
+            type: 'uint256',
+            name: 'identifier',
+          },
+          {
+            type: 'uint256',
+            name: 'amount',
+          },
+        ],
+      },
+      {
+        type: 'tuple[]',
+        name: 'consideration',
+        components: [
+          {
+            type: 'uint8',
+            name: 'itemType',
+          },
+          {
+            type: 'address',
+            name: 'token',
+          },
+          {
+            type: 'uint256',
+            name: 'identifier',
+          },
+          {
+            type: 'uint256',
+            name: 'amount',
+          },
+          {
+            type: 'address',
+            name: 'recipient',
+          },
+        ],
+      },
+    ],
+  },
+  // Opensea - 1.5
+  '0x00000000000000adc04c56bf30ac9d3c0aaf14dc': {
+    name: 'Opensea ⚓️',
+    site: 'https://opensea.io/assets/ethereum/',
     logDecoder: [
       {
         type: 'bytes32',
@@ -204,7 +267,307 @@ const markets = {
   },
   '0x000000000000ad05ccc4f10045630fb830b95127': {
     name: 'blur',
-    site: 'https://opensea.io/assets/',
+    site: 'https://opensea.io/assets/ethereum/',
+    logDecoder: [
+        {
+            type: 'tuple',
+            name: 'sell',
+            components: [
+                {
+                    type: 'address',
+                    name: 'trader'
+                },
+                {
+                    type: 'uint8',
+                    name: 'side'
+                },
+                {
+                    type: 'address',
+                    name: 'matchingPolicy'
+                },
+                {
+                    type: 'address',
+                    name: 'collection'
+                },
+                {
+                    type: 'uint256',
+                    name: 'tokenId'
+                },
+                {
+                    type: 'uint256',
+                    name: 'amount'
+                },
+                {
+                    type: 'address',
+                    name: 'paymentToken'
+                },
+                {
+                    type: 'uint256',
+                    name: 'price'
+                },
+                {
+                    type: 'uint256',
+                    name: 'listingTime'
+                },
+                {
+                    type: 'uint256',
+                    name: 'expirationTime'
+                },
+                {
+                    type: 'tuple[]',
+                    name: 'fees',
+                    components: [
+                        {
+                            type: 'uint16',
+                            name: 'rate'
+                        },
+                        {
+                            type: 'address',
+                            name: 'recipient'
+                        }
+                    ]
+                },
+                {
+                    type: 'uint256',
+                    name: 'salt'
+                },
+                {
+                    type: 'bytes',
+                    name: 'extraParams'
+                }
+            ]
+        },
+        {
+            type: 'bytes32',
+            name: 'sellHash'
+        },
+        {
+            type: 'tuple',
+            name: 'buy',
+            components: [
+                {
+                    type: 'address',
+                    name: 'trader'
+                },
+                {
+                    type: 'uint8',
+                    name: 'side'
+                },
+                {
+                    type: 'address',
+                    name: 'matchingPolicy'
+                },
+                {
+                    type: 'address',
+                    name: 'collection'
+                },
+                {
+                    type: 'uint256',
+                    name: 'tokenId'
+                },
+                {
+                    type: 'uint256',
+                    name: 'amount'
+                },
+                {
+                    type: 'address',
+                    name: 'paymentToken'
+                },
+                {
+                    type: 'uint256',
+                    name: 'price'
+                },
+                {
+                    type: 'uint256',
+                    name: 'listingTime'
+                },
+                {
+                    type: 'uint256',
+                    name: 'expirationTime'
+                },
+                {
+                    type: 'tuple[]',
+                    name: 'fees',
+                    components: [
+                        {
+                            type: 'uint16',
+                            name: 'rate'
+                        },
+                        {
+                            type: 'address',
+                            name: 'recipient'
+                        }
+                    ]
+                },
+                {
+                    type: 'uint256',
+                    name: 'salt'
+                },
+                {
+                    type: 'bytes',
+                    name: 'extraParams'
+                }
+            ]
+        },
+        {
+            type: 'bytes32',
+            name: 'buyHash'
+        }
+    ]
+  },
+  '0x39da41747a83aee658334415666f3ef92dd0d541': {
+    name: 'blur',
+    site: 'https://opensea.io/assets/ethereum/',
+    logDecoder: [
+        {
+            type: 'tuple',
+            name: 'sell',
+            components: [
+                {
+                    type: 'address',
+                    name: 'trader'
+                },
+                {
+                    type: 'uint8',
+                    name: 'side'
+                },
+                {
+                    type: 'address',
+                    name: 'matchingPolicy'
+                },
+                {
+                    type: 'address',
+                    name: 'collection'
+                },
+                {
+                    type: 'uint256',
+                    name: 'tokenId'
+                },
+                {
+                    type: 'uint256',
+                    name: 'amount'
+                },
+                {
+                    type: 'address',
+                    name: 'paymentToken'
+                },
+                {
+                    type: 'uint256',
+                    name: 'price'
+                },
+                {
+                    type: 'uint256',
+                    name: 'listingTime'
+                },
+                {
+                    type: 'uint256',
+                    name: 'expirationTime'
+                },
+                {
+                    type: 'tuple[]',
+                    name: 'fees',
+                    components: [
+                        {
+                            type: 'uint16',
+                            name: 'rate'
+                        },
+                        {
+                            type: 'address',
+                            name: 'recipient'
+                        }
+                    ]
+                },
+                {
+                    type: 'uint256',
+                    name: 'salt'
+                },
+                {
+                    type: 'bytes',
+                    name: 'extraParams'
+                }
+            ]
+        },
+        {
+            type: 'bytes32',
+            name: 'sellHash'
+        },
+        {
+            type: 'tuple',
+            name: 'buy',
+            components: [
+                {
+                    type: 'address',
+                    name: 'trader'
+                },
+                {
+                    type: 'uint8',
+                    name: 'side'
+                },
+                {
+                    type: 'address',
+                    name: 'matchingPolicy'
+                },
+                {
+                    type: 'address',
+                    name: 'collection'
+                },
+                {
+                    type: 'uint256',
+                    name: 'tokenId'
+                },
+                {
+                    type: 'uint256',
+                    name: 'amount'
+                },
+                {
+                    type: 'address',
+                    name: 'paymentToken'
+                },
+                {
+                    type: 'uint256',
+                    name: 'price'
+                },
+                {
+                    type: 'uint256',
+                    name: 'listingTime'
+                },
+                {
+                    type: 'uint256',
+                    name: 'expirationTime'
+                },
+                {
+                    type: 'tuple[]',
+                    name: 'fees',
+                    components: [
+                        {
+                            type: 'uint16',
+                            name: 'rate'
+                        },
+                        {
+                            type: 'address',
+                            name: 'recipient'
+                        }
+                    ]
+                },
+                {
+                    type: 'uint256',
+                    name: 'salt'
+                },
+                {
+                    type: 'bytes',
+                    name: 'extraParams'
+                }
+            ]
+        },
+        {
+            type: 'bytes32',
+            name: 'buyHash'
+        }
+    ]
+  },
+  '0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5': {
+    name: 'blur',
+    site: 'https://opensea.io/assets/ethereum/',
     logDecoder: [
         {
             type: 'tuple',
