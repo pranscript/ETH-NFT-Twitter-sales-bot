@@ -232,7 +232,7 @@ multiSaleEmitter.on('processMultiSale', async () => {
     await getMediaID(data['tokens']).then(res => {
                 mediaID = res;
                 // Sweep sales by accepting bids through blur might have multiple buyers. In this case, calculating stat of buyer is avoided
-                if(data['recepient'] in {'0x39da41747a83aee658334415666f3ef92dd0d541':'blur','0x000000000000ad05ccc4f10045630fb830b95127':'blur'}){
+                if(data['recepient'] in {'0x39da41747a83aee658334415666f3ef92dd0d541':'blur','0x000000000000ad05ccc4f10045630fb830b95127':'blur','0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5':'blur'}){
                   multiSaleTweetWithImage(`${tweetText}\n`+
                     `${process.env.HASHTAGS}\b`+
                     `https://etherscan.io/tx/${data['transactionHash']}`
