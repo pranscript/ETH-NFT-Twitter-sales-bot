@@ -716,5 +716,291 @@
         ],
         "name": "Execution721TakerFeePacked",
         "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "trader",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "id",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "amount",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "collection",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "enum AssetType",
+                        "name": "assetType",
+                        "type": "uint8"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Transfer",
+                "name": "transfer",
+                "type": "tuple"
+            },
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "orderHash",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "listingIndex",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "price",
+                "type": "uint256"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "recipient",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint16",
+                        "name": "rate",
+                        "type": "uint16"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct FeeRate",
+                "name": "makerFee",
+                "type": "tuple"
+            },
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "recipient",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "rate",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct FeeRate",
+                        "name": "protocolFee",
+                        "type": "tuple"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "recipient",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "rate",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct FeeRate",
+                        "name": "takerFee",
+                        "type": "tuple"
+                    }
+                ],
+                "indexed": false,
+                "internalType": "struct Fees",
+                "name": "fees",
+                "type": "tuple"
+            },
+            {
+                "indexed": false,
+                "internalType": "enum OrderType",
+                "name": "orderType",
+                "type": "uint8"
+            }
+        ],
+        "name": "Execution",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "trader",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "address",
+                                "name": "collection",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "bytes32",
+                                "name": "listingsRoot",
+                                "type": "bytes32"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "numberOfListings",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "expirationTime",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "enum AssetType",
+                                "name": "assetType",
+                                "type": "uint8"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "address",
+                                        "name": "recipient",
+                                        "type": "address"
+                                    },
+                                    {
+                                        "internalType": "uint16",
+                                        "name": "rate",
+                                        "type": "uint16"
+                                    }
+                                ],
+                                "internalType": "struct FeeRate",
+                                "name": "makerFee",
+                                "type": "tuple"
+                            },
+                            {
+                                "internalType": "uint256",
+                                "name": "salt",
+                                "type": "uint256"
+                            }
+                        ],
+                        "internalType": "struct Order[]",
+                        "name": "orders",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "uint256",
+                                "name": "index",
+                                "type": "uint256"
+                            },
+                            {
+                                "internalType": "bytes32[]",
+                                "name": "proof",
+                                "type": "bytes32[]"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "index",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "tokenId",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "price",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct Listing",
+                                "name": "listing",
+                                "type": "tuple"
+                            },
+                            {
+                                "components": [
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "tokenId",
+                                        "type": "uint256"
+                                    },
+                                    {
+                                        "internalType": "uint256",
+                                        "name": "amount",
+                                        "type": "uint256"
+                                    }
+                                ],
+                                "internalType": "struct Taker",
+                                "name": "taker",
+                                "type": "tuple"
+                            }
+                        ],
+                        "internalType": "struct Exchange[]",
+                        "name": "exchanges",
+                        "type": "tuple[]"
+                    },
+                    {
+                        "components": [
+                            {
+                                "internalType": "address",
+                                "name": "recipient",
+                                "type": "address"
+                            },
+                            {
+                                "internalType": "uint16",
+                                "name": "rate",
+                                "type": "uint16"
+                            }
+                        ],
+                        "internalType": "struct FeeRate",
+                        "name": "takerFee",
+                        "type": "tuple"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "signatures",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct TakeBid",
+                "name": "inputs",
+                "type": "tuple"
+            },
+            {
+                "internalType": "bytes",
+                "name": "oracleSignature",
+                "type": "bytes"
+            }
+        ],
+        "name": "takeBid",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ]
