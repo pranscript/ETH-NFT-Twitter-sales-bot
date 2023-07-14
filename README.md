@@ -12,9 +12,6 @@
 - Looksrare
 - X2Y2
 - Blur
-- Gem
-- Genie
-- Element
 
 ## Features
 
