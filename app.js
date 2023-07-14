@@ -119,7 +119,7 @@ async function monitorContract() {
               currency.decimals
             ))
           }
-          if(ethers.utils.defaultAbiCoder.decode(['address'], log.topics[1]).toString().toLowerCase() != "0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5" && ethers.utils.defaultAbiCoder.decode(['address'], log.topics[2]).toString().toLowerCase() != "0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5")
+          if(recipient == '0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5' && ethers.utils.defaultAbiCoder.decode(['address'], log.topics[1]).toString().toLowerCase() != "0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5" && ethers.utils.defaultAbiCoder.decode(['address'], log.topics[2]).toString().toLowerCase() != "0xb2ecfe4e4d61f8790bbb9de2d1259b9e2410cea5")
           totalPrice += Number(ethers.utils.formatUnits(
             log.data,
             currency.decimals
