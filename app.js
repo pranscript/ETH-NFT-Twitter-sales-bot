@@ -1,7 +1,6 @@
 
 const { Alchemy, Network, Contract } = require('alchemy-sdk');
 const { ethers } = require('ethers');
-const retry = require('async-retry');
 const _ = require('lodash');
 const { markets } = require('./markets.js');
 const { aggregators } = require('./aggregators.js');
@@ -49,39 +48,22 @@ async function monitorContract() {
       lastTransactionHash = transactionHash;
 
       // attempt to retrieve the receipt, sometimes not available straight away
-      const receipt = await retry(
-        async (bail) => {
-          const rec = await web3.core.getTransactionReceipt(transactionHash);
+      const receipt = await web3.core.getTransactionReceipt(transactionHash);
 
-          if (rec == null) {
-            throw new Error('receipt not found, try again');
-          }
+      if (receipt == null) {
+        throw new Error('receipt not found, try again');
+      }
 
-          return rec;
-        },
-        {
-          retries: 5,
-        }
-      );
-      const assetTransfers = await retry(
-        async (bail) => {
-          const tra = await web3.core.getAssetTransfers({
-            fromBlock: receipt.blockNumber,
-            toBlock:receipt.blockNumber,
-            excludeZeroValue: true,
-            category: ["internal"],
-          })
+      const assetTransfers =  await web3.core.getAssetTransfers({
+        fromBlock: receipt.blockNumber,
+        toBlock:receipt.blockNumber,
+        excludeZeroValue: true,
+        category: ["internal"],
+      })
 
-          if (tra == null) {
-            throw new Error('cant get internal transfers ');
-          }
-
-          return tra;
-        },
-        {
-          retries: 5,
-        }
-      );
+      if (assetTransfers == null) {
+        console.log('Unable to get internal transfers. Total value might not be correct ');
+      }
       
       let currency = {
         name: 'ETH',

@@ -104,7 +104,12 @@ async function getUsername(buyer) {
     const assetName = await retry(
       async (bail) => {
         const response = await axios.get(
-          `https://api.opensea.io/api/v1/user/${buyer}`
+          `https://api.opensea.io/api/v1/user/${buyer}`,
+          {
+            headers: {
+              'X-API-KEY': process.env.X_API_KEY,
+            },
+          }
         );
         
         const data = response.data;
@@ -160,7 +165,12 @@ async function getSlug() {
       async (bail) => {
         // retrieve metadata for asset from opensea
         const response = await axios.get(
-          `https://api.opensea.io/collection/${process.env.OPENSEA_SLUG}`
+          `https://api.opensea.io/collection/${process.env.OPENSEA_SLUG}`,
+          {
+            headers: {
+              'X-API-KEY': process.env.X_API_KEY,
+            },
+          }
         );
         
         const data = response.data.collection;
