@@ -2,9 +2,15 @@
 
  Monitors NFT sales through Ethereum logs, fetches metadata from either Looksrare API or Opensea API and posts it on Twitter.
 
-## Live Demo
+## Live Demo (Latest Version)
 
 [Mekaverse Sales Bot](https://twitter.com/botMeka)
+
+## Deploy service
+
+- [SaleSage.xyz](https://salesage.xyz) 
+
+![Header](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/logo.jpg)
 
 ## Marketplace
 
@@ -15,6 +21,7 @@
 
 ## Features
 
+- Uses Twitter v2 API
 - Supports Opensea API and Looksrare API
 - Supports rate limiting
 - Supports both individual as well as sweep sales.
@@ -30,7 +37,8 @@
 
 ## Contact to Deploy
 
-[pran_eth](https://twitter.com/pran_eth) - You can DM me here
+[salesagebot](https://twitter.com/salesagebot)
+[pran_eth](https://twitter.com/pran_eth)
 
 ## Example Images
 
@@ -40,19 +48,6 @@
 
 ![Sweep Sale](https://raw.githubusercontent.com/pranscript/ETH-NFT-Twitter-sales-bot/master/img/sweep.jpg)
 
-
-## Credits and Acknowledgments
-
-This repo is a modification of repos [NFT Sales Twitter Bot](https://github.com/dsgriffin/nft-sales-twitter-bot) and [Ethereum NFT Sales Bot](https://github.com/kenryu42/ethereum-nft-sales-bot).
-
-[dsgriffin](https://github.com/dsgriffin) 
-[Kenryu42](https://github.com/kenryu42) 
-
-## License 📃
-
-This code is licensed under the [ISC License](https://choosealicense.com/licenses/isc/).
-
-Please include proper attribution to my original repo if you fork, modify or utilize this repo in any way. Thank you!
 
 ## Donations
 
